@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# Copyright 2014 The Kubernetes Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 kube::util::sortable_date() {
   date "+%Y%m%d-%H%M%S"
 }
@@ -40,57 +26,6 @@ kube::util::wait_for_url() {
   done
   kube::log::error "Timed out waiting for ${prefix} to answer at ${url}; tried ${times} waiting ${wait} between each"
   return 1
-}
-
-# returns a random port
-kube::util::get_random_port() {
-  awk -v min=1024 -v max=65535 'BEGIN{srand(); print int(min+rand()*(max-min+1))}'
-}
-
-# use netcat to check if the host($1):port($2) is free (return 0 means free, 1 means used)
-kube::util::test_host_port_free() {
-  local host=$1
-  local port=$2
-  local success=0
-  local fail=1
-
-  which nc >/dev/null || {
-    kube::log::usage "netcat isn't installed, can't verify if ${host}:${port} is free, skipping the check..."
-    return ${success}
-  }
-
-  if [ ! $(nc -vz "${host}" "${port}") ]; then
-    kube::log::status "${host}:${port} is free, proceeding..."
-    return ${success}
-  else
-    kube::log::status "${host}:${port} is already used"
-    return ${fail}
-  fi
-}
-
-# Example:  kube::util::trap_add 'echo "in trap DEBUG"' DEBUG
-# See: http://stackoverflow.com/questions/3338030/multiple-bash-traps-for-the-same-signal
-kube::util::trap_add() {
-  local trap_add_cmd
-  trap_add_cmd=$1
-  shift
-
-  for trap_add_name in "$@"; do
-    local existing_cmd
-    local new_cmd
-
-    # Grab the currently defined trap commands for this trap
-    existing_cmd=`trap -p "${trap_add_name}" |  awk -F"'" '{print $2}'`
-
-    if [[ -z "${existing_cmd}" ]]; then
-      new_cmd="${trap_add_cmd}"
-    else
-      new_cmd="${existing_cmd};${trap_add_cmd}"
-    fi
-
-    # Assign the test
-    trap "${new_cmd}" "${trap_add_name}"
-  done
 }
 
 # Opposite of kube::util::ensure-temp-dir()
