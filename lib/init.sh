@@ -24,9 +24,9 @@ set -o pipefail
 # The root of the abcdsh directory
 ABCD_ROOT="$(cd "$(dirname "${BASH_SOURCE}")/../.." && pwd -P)"
 
-ABCD_OUTPUT_SUBPATH="${KUBE_OUTPUT_SUBPATH:-_output/local}"
-ABCD_OUTPUT="${KUBE_ROOT}/${KUBE_OUTPUT_SUBPATH}"
-ABCD_OUTPUT_BINPATH="${KUBE_OUTPUT}/bin"
+ABCD_OUTPUT_SUBPATH="${ABCD_OUTPUT_SUBPATH:-_output/local}"
+ABCD_OUTPUT="${KUBE_ROOT}/${ABCD_OUTPUT_SUBPATH}"
+ABCD_OUTPUT_BINPATH="${ABCD_OUTPUT}/bin"
 
 
 source "${ABCD_ROOT}/lib/util_platform.sh"
