@@ -47,3 +47,11 @@ For ceph datastore add extra parameter `--secret f6f03141-2666` is required.
 $ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --secret f6f03141-2666
 
 ```
+
+## ONE : Create template
+
+1. To create a Template in opennebula master
+
+```
+$ /var/lib/megam/abcdsh/one/create_template.sh 
+```
