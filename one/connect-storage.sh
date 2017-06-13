@@ -9,9 +9,9 @@ ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"create-storage.sh"
 
 #connect filesystem storage to opennebula master
-function connect_fsstorage() {
+function connect_storage() {
 parse_storageparams "$@"
 create-storage
 }
 
-connect_host "$@"
+connect_storage "$@"

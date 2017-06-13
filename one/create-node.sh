@@ -26,15 +26,16 @@ source $ROOT/"../lib/init.sh"
 source $ROOT/"config-default.sh"
 
 # Verify prereqs on host machine
-function verify-hostprereqs() {
+function verify-prereqs() {
  # Check the Opennebula command-line clients
- for client in onehost ;
+ one=$1
+ for client in $one ;
  do
   if which $client >/dev/null 2>&1; then
     echo "${client} client installed"
   else
     echo "${client}  does not exist"
-     echo "The program 'onehost' is currently not installed."
+    echo "The program 'onehost' is currently not installed."
     echo "You can install it by typing:apt install opennebula-tools."
     exit 1
   fi
@@ -42,7 +43,7 @@ function verify-hostprereqs() {
 }
 #create node to opennebula master
 function createhost() {
- verify-hostprereqs
+ verify-prereqs onehost
  onehost create $HOSTIP --im $HYPERVISOR --vm $HYPERVISOR
 }
 

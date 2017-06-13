@@ -18,8 +18,6 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 
 set -o errexit
-set -o nounset
-set -o pipefail
 
 # The root of the abcdsh directory
 ABCD_ROOT="$(cd "$(dirname "${BASH_SOURCE}")/../" && pwd -P)"
@@ -32,4 +30,4 @@ ABCD_OUTPUT_BINPATH="${ABCD_OUTPUT}/bin"
 
 source "${ABCD_ROOT}/lib/logging.sh"
 
-abcd::log::install_errexit
+#abcd::log::install_errexit

@@ -26,37 +26,25 @@ source $ROOT/"../lib/init.sh"
 source $ABCD_ROOT/"config-default.sh"
 source $ABCD_ROOT/"one/create-node.sh"
 
-# Verify prereqs on host machine
-function verify-storageprereqs() {
- # Check the Opennebula command-line clients
- for client in onedatastore ;
- do
-  if which $client >/dev/null 2>&1; then
-    echo "${client}  installed"
-  else
-    echo "${client}  does not exist"
-     echo "The program 'onedatastore' is currently not installed."
-    echo "You can install it by typing:apt install opennebula-tools."
-    exit 1
-  fi
- done
-}
 function create_ds() {
-  if [ $FS == "fs" || $FS == "nfs"]
+  if [[ $FS == "fs" || $FS == "nfs" ]]
   then
     sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ds.conf"
     onedatastore create $ABCD_ROOT/"one/conf/ds.conf"
-  elif [ $FS == "lvm"]
+  elif [ $FS == "lvm" ]
+  then
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/lvm_ds.conf"
    onedatastore create $ABCD_ROOT/"one/conf/lvm_ds.conf"
  else
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
    sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
+   sed -i "s/^CEPH_SECRET = f6f03141$/CEPH_SECRET = $CEPH_SECRET/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
    onedatastore create $ABCD_ROOT/"one/conf/ceph_ds.conf"
+ fi
 }
 #create node to opennebula master
 function create-storage() {
- verify-storageprereqs
+ verify-prereqs onedatastore
  create_ds
  }
 
