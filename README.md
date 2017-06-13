@@ -4,9 +4,10 @@ The command control for the pods (bunch of sh's)  for the `Onboard Cloud` [proje
 
 ## Usage
 
-## ONE : Connect
+## ONE : Connect Node
 
 ```
+bash connect-node.sh --hostip 127.0.0.1
 
 ```
 
@@ -16,7 +17,3 @@ The command control for the pods (bunch of sh's)  for the `Onboard Cloud` [proje
 ```
 
 ```
-
-
-
-

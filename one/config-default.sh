@@ -19,3 +19,7 @@ MASTER_IP_RANGE="${MASTER_IP_RANGE:-10.246.0.0/24}"
 
 # Range of IPs assigned by Kubernetes to services
 SERVICE_CLUSTER_IP_RANGE="10.244.240.0/20"
+
+# Default hypervisior
+
+HYPERVISOR="kvm"
