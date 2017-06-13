@@ -23,7 +23,6 @@ set -e
 # config-default.sh.
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
-source $ABCD_ROOT/"config-default.sh"
 source $ABCD_ROOT/"one/create-node.sh"
 
 function create_ds() {

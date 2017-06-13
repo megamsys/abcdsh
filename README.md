@@ -31,13 +31,13 @@ bash /var/lib/megam/abcdsh/one/connect-node.sh --hostip 127.0.0.1 --hypervisor x
 
 **To create a NFS  datastore to opennebula master**  
 
-  bash /var/lib/one/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs lvm  
+  bash /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs lvm  
 
   **To create a CEPH  datastore to opennebula master.**
   If you use ceph datastore add extra parameter
 
    `--secret f6f03141-2666`  
 
-  bash /var/lib/one/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --secret f6f03141-2666
-  
+  bash /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --secret f6f03141-2666
+
 ```
