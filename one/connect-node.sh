@@ -6,7 +6,7 @@ set -e
 echo "one host creation from opennebula master"
 
 ROOT=$(dirname "${BASH_SOURCE}")
-source $ROOT/"create-storage.sh"
+source $ROOT/"create-node.sh"
 
 #connect node to opennebula master
 function connect_host() {

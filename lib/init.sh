@@ -22,16 +22,14 @@ set -o nounset
 set -o pipefail
 
 # The root of the abcdsh directory
-ABCD_ROOT="$(cd "$(dirname "${BASH_SOURCE}")/../.." && pwd -P)"
+ABCD_ROOT="$(cd "$(dirname "${BASH_SOURCE}")/../" && pwd -P)"
 
 ABCD_OUTPUT_SUBPATH="${ABCD_OUTPUT_SUBPATH:-_output/local}"
 ABCD_OUTPUT="${KUBE_ROOT}/${ABCD_OUTPUT_SUBPATH}"
 ABCD_OUTPUT_BINPATH="${ABCD_OUTPUT}/bin"
 
 
-source "${ABCD_ROOT}/lib/util_platform.sh"
-source "${ABCD_ROOT}/lib/util_ssh.sh"
-source "${ABCD_ROOT}/lib/util_wait.sh"
+
 source "${ABCD_ROOT}/lib/logging.sh"
 
 abcd::log::install_errexit

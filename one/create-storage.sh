@@ -21,44 +21,58 @@ set -e
 
 # Use the config file specified in $KUBE_CONFIG_FILE, or default to
 # config-default.sh.
-KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
 ROOT=$(dirname "${BASH_SOURCE}")
-source $ROOT/"../lib/logging.sh"
-source $ROOT/"config-default.sh"
+source $ROOT/"../lib/init.sh"
+source $ABCD_ROOT/"config-default.sh"
+source $ABCD_ROOT/"one/create-node.sh"
 
 # Verify prereqs on host machine
-function verify-hostprereqs() {
+function verify-storageprereqs() {
  # Check the Opennebula command-line clients
- for client in onehost ;
+ for client in onedatastore ;
  do
   if which $client >/dev/null 2>&1; then
-    echo "${client} client installed"
+    echo "${client}  installed"
   else
     echo "${client}  does not exist"
-     echo "The program 'onehost' is currently not installed."
+     echo "The program 'onedatastore' is currently not installed."
     echo "You can install it by typing:apt install opennebula-tools."
     exit 1
   fi
  done
 }
-#create node to opennebula master
-function createhost() {
- verify-hostprereqs
- onehost create $HOSTIP --im $HYPERVISOR --vm $HYPERVISOR
+function create_ds() {
+  if [ $FS == "fs" || $FS == "nfs"]
+  then
+    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ds.conf"
+    onedatastore create $ABCD_ROOT/"one/conf/ds.conf"
+  elif [ $FS == "lvm"]
+   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/lvm_ds.conf"
+   onedatastore create $ABCD_ROOT/"one/conf/lvm_ds.conf"
+ else
+   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
+   sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
+   onedatastore create $ABCD_ROOT/"one/conf/ceph_ds.conf"
 }
+#create node to opennebula master
+function create-storage() {
+ verify-storageprereqs
+ create_ds
+ }
 
-function usage() {
-  echo "Usage:  connectnode[OPTION]"
+function storage_usage() {
+  echo "Usage:  connectstorage[OPTION]"
   echo
   echo "Options:"
-  echo " --hostip  <give host ipaddress or name> "
-  echo "--hypervisor <give hypervisior name like kvm, xen>"
+  echo " --nodeip  <give node ipaddress or name> "
+  echo "--fs <give filesystem datatype like fs, lvm, nfs, ceph>"
+  echo "--secret <if you ceph use this parameter and specify the secret key of ceph>"
   echo "--help"
   echo
 }
 
 #check host parameters are present or not
-function parse_hostparams() {
+function parse_storageparams() {
    check_params "$@"
     while
     (( $# > 0 ))
@@ -66,43 +80,48 @@ function parse_hostparams() {
     token="$1"
     shift
     case "$token" in
-      (--hostip)
-        HOSTIP="$1"
-        if [ -z "$HOSTIP" ]
+      (--nodeip)
+        NODEIP="$1"
+        if [ -z "$NODEIP" ]
         then
-         usage
+         storage_usage
          exit
         fi
         shift
         ;;
-      (--hypervisor)
-       if [ -z "$1" ]
-       then
-         usage
+      (--fs)
+        FS="$1"
+        if [ -z "$FS" ]
+        then
+         storage_usage
          exit
-       fi
-       shift
+        fi
+        shift
        ;;
+      (--secret)
+        if [ "$FS" == "ceph" ]
+         then
+         CEPH_SECRET="$1"
+         if [ -z "$CEPH_SECRET" ]
+         then
+          storage_usage
+          exit
+         fi
+       else
+         echo "warning: This parameter is not used for fs, lvm datastore.So skip this parameter"
+       fi
+         shift
+        ;;
       (--help|usage)
-        usage
+        storage_usage
         exit 0
         ;;
 
       (*)
-        usage
+        storage_usage
         exit 1
         ;;
 
     esac
   done
-}
-
-#check arguments is passed from commandline
-function check_params() {
-if [ "$#" -le 0 ]
- then
- echo "NO ARGUMENTS ARE PASSED!!!!!!"
- usage
-exit 0
-fi
 }
