@@ -6,7 +6,6 @@ set -e
 echo "one template creation from opennebula master"
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
-source $ROOT/"config-default.sh"
 source $ROOT/"create-node.sh"
 
 #connect node to opennebula master

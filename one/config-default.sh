@@ -19,7 +19,3 @@ MASTER_IP_RANGE="${MASTER_IP_RANGE:-10.246.0.0/24}"
 
 # Default hypervisior
  HYPERVISOR="kvm"
-
-# Default Template name
-
- TEMPLATE_NAME="megam"
