@@ -3,15 +3,15 @@
 
 # exit on any error
 set -e
+echo "one host creation from opennebula master"
 
-source $(dirname $0)/../kube-util.sh
+ROOT=$(dirname "${BASH_SOURCE}")
+source $ROOT/"create-node.sh"
 
-echo "Starting cluster using provider: $KUBERNETES_PROVIDER"
+#connect node to opennebula master
+function connect_host() {
+parse_hostparams "$@"
+createhost
+}
 
-verify-prereqs
-kube-up
-
-# skipping validation for now until since machines show up as private IPs
-# source $(dirname $0)/validate-cluster.sh
-
-echo "Done"
+connect_host "$@"
