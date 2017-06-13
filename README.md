@@ -7,7 +7,7 @@ The command control for the pods (bunch of sh's)  for the `Onboard Cloud` [proje
 ## ONE : Connect Node
 
 ```
-bash connect-node.sh --hostip 127.0.0.1
+bash /var/lib/one/abcdsh/one/connect-node.sh --hostip 127.0.0.1
 
 ```
 

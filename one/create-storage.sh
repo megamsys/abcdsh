@@ -22,7 +22,7 @@ set -e
 # Use the config file specified in $KUBE_CONFIG_FILE, or default to
 # config-default.sh.
 KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
-readonly ROOT=$(dirname "${BASH_SOURCE}")
+ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/logging.sh"
 source $ROOT/"config-default.sh"
 
@@ -41,7 +41,7 @@ function verify-hostprereqs() {
   fi
  done
 }
-
+#create node to opennebula master
 function createhost() {
  verify-hostprereqs
  onehost create $HOSTIP --im $HYPERVISOR --vm $HYPERVISOR
@@ -57,8 +57,9 @@ function usage() {
   echo
 }
 
-
+#check host parameters are present or not
 function parse_hostparams() {
+   check_params "$@"
     while
     (( $# > 0 ))
   do
@@ -82,7 +83,7 @@ function parse_hostparams() {
        fi
        shift
        ;;
-      (help|usage)
+      (--help|usage)
         usage
         exit 0
         ;;
@@ -94,4 +95,14 @@ function parse_hostparams() {
 
     esac
   done
+}
+
+#check arguments is passed from commandline
+function check_params() {
+if [ "$#" -le 0 ]
+ then
+ echo "NO ARGUMENTS ARE PASSED!!!!!!"
+ usage
+exit 0
+fi
 }
