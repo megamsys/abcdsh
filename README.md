@@ -53,5 +53,18 @@ $ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --s
 1. To create a Template in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/create_template.sh 
+$ /var/lib/megam/abcdsh/one/create_template.sh
+```
+
+## ONE : Create network
+
+1. To create a Network to opennebula master using `default:` type IP4 .
+
+```
+$ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
+```
+2. To create a Network to opennebula master using `default:` type IP6 .
+
+```
+$ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0 --type IP6
 ```
