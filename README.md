@@ -81,3 +81,24 @@ $ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s
 $ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso
 
 ```
+
+## ONE : Create Cluster
+
+1. To create a cluster in opennebula master
+
+```
+$ /var/lib/megam/abcdsh/one/create-cluster.sh --cluster_name test
+```
+2. Add host to cluster in opennebula master
+
+```
+$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster_id  <10> --host_id <20>
+```
+3. Add vnet to cluster in opennebula master
+```
+$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster_id  <10> --vnet_id <0>
+```
+4. Add datastore to cluster in opennebula master
+```
+$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster_id  <10> --datastore_id <30>
+```
