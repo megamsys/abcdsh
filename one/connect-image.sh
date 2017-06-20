@@ -10,7 +10,7 @@ source $ROOT/"create-image.sh"
 
 #connect  image to opennebula master
 function connect_image() {
-parse_storageparams "$@"
+parse_imageparams "$@"
 create-image
 }
 

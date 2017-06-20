@@ -23,9 +23,9 @@ set -e
 # config-default.sh.
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
-source $ABCD_ROOT/"one/create-image.sh"
+source $ABCD_ROOT/"one/create-node.sh"
 #download image and create image to opennebula
-function download() {
+function image_download() {
 basename=${IMAGE_URL##*/}
 filename=${basename%%.*}
 dir=/var/lib/images
@@ -36,7 +36,6 @@ tar -zxvf *.tar.gz
 rm -rf *.tar.gz
 img=$(ls $dir/$filename)
 oneimage create -d $ds_id --name $NAME --path $dir/$filename/$img
-rm -rf $dir/$filename
 }
 
 function create_image() {
@@ -45,7 +44,7 @@ ds_id=`echo "$ds" | sed 's/.*: //'`
 extension=`echo $IMAGE_URL | awk -F'[.]' '{print $(NF-1)"."$NF}'`
 if [ "$extension" == "tar.gz" ]
 then
-  image_download
+  image_download $ds_id
 else
 oneimage create -d $ds_id --name $NAME --path $IMAGE_URL
 fi

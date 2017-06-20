@@ -29,16 +29,16 @@ function create_ds() {
   if [[ $FS == "fs" || $FS == "nfs" ]]
   then
     sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ds.conf"
-    echo "ds="`onedatastore create $ABCD_ROOT/"one/conf/ds.conf"` >> $ABCD_ROOT/"one/conf/result_info.sh"
+    echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
   elif [ $FS == "lvm" ]
   then
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/lvm_ds.conf"
-   echo "ds="`onedatastore create $ABCD_ROOT/"one/conf/lvm_ds.conf"` >> $ABCD_ROOT/"one/conf/result_info.sh"
+   echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/lvm_ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
  else
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
    sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
    sed -i "s/^CEPH_SECRET = f6f03141$/CEPH_SECRET = $CEPH_SECRET/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
-   echo "ds="`onedatastore create $ABCD_ROOT/"one/conf/ceph_ds.conf"` >> $ABCD_ROOT/"one/conf/result_info.sh"
+   echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/ceph_ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
  fi
 }
 #create node to opennebula master
