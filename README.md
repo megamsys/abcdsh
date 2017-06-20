@@ -68,3 +68,16 @@ $ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gate
 ```
 $ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0 --type IP6
 ```
+
+## ONE : Create image
+
+1. To create a Image in opennebula master
+
+```
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz
+
+(or)
+
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso
+
+```
