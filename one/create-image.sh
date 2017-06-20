@@ -67,7 +67,7 @@ function image_usage() {
 
 #check image parameters are present or not
 function parse_imageparams() {
-   check_params "$@"
+   check_imageparams "$@"
     while
     (( $# > 0 ))
   do
@@ -104,4 +104,12 @@ function parse_imageparams() {
 
     esac
   done
+}
+function check_imageparams() {
+if [ "$#" -le 0 ]
+ then
+ echo "NO ARGUMENTS ARE PASSED!!!!!!"
+ image_usage
+exit 0
+fi
 }

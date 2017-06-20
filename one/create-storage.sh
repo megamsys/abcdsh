@@ -60,7 +60,7 @@ function storage_usage() {
 
 #check host parameters are present or not
 function parse_storageparams() {
-   check_params "$@"
+   check_storageparams "$@"
     while
     (( $# > 0 ))
   do
@@ -111,4 +111,13 @@ function parse_storageparams() {
 
     esac
   done
+}
+
+function check_storageparams() {
+if [ "$#" -le 0 ]
+ then
+ echo "NO ARGUMENTS ARE PASSED!!!!!!"
+ storage_usage
+exit 0
+fi
 }

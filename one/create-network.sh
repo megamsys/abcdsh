@@ -58,7 +58,7 @@ function network_usage() {
 
 #check network parameters are present or not
 function parse_networkparams() {
-   check_params "$@"
+   check_networkparams "$@"
     while
     (( $# > 0 ))
   do
@@ -125,4 +125,12 @@ function parse_networkparams() {
 
     esac
   done
+}
+function check_networkparams() {
+if [ "$#" -le 0 ]
+ then
+ echo "NO ARGUMENTS ARE PASSED!!!!!!"
+ network_usage
+exit 0
+fi
 }
