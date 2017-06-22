@@ -1,0 +1,8 @@
+NAME   = "public"
+TYPE   = FIXED
+BRIDGE = one
+AR = [ TYPE = "IP6", IP = "127.0.0.1", SIZE = 1 ]
+DNS = "8.8.8.8 8.8.4.4"
+GATEWAY6 = "127.0.0.1/64"
+NETWORK_MASK = "255.255.255.xxx"
+VN_MAD = dummy
