@@ -47,7 +47,7 @@ function createhost() {
  onehost create $HOSTIP --im $HYPERVISOR --vm $HYPERVISOR
 }
 
-function host_usage() {
+function usage() {
   echo "Usage:  connectnode[OPTION]"
   echo
   echo "Options:"
