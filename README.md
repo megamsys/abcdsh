@@ -1,10 +1,14 @@
 # abcdsh
 
-The command control for the pods (bunch of sh's)  for the `Onboard Cloud` [project](https://github.com/megamsys/abcd)
+The command control for the pods (bunch of sh's)  for the `Onboard Cloud` [project](https://github.com/megamsys/abcd). The control commands are done seamlessly in the UI. These `sh` is bundled in the container.
 
 ## Usage
 
-## ONE : Connect Node
+# OpenNebula[ONE] Adapter
+
+### Connect Host to Master
+
+Master refers to ONE Frontend. Host refers to a compute node.
 
 1. To connect a host ip 127.0.0.1 to master using `default:` hypervisor kvm.
 
@@ -20,7 +24,7 @@ $ /var/lib/megam/abcdsh/one/connect-node.sh --hostip 127.0.0.1 --hypervisor xen
 
 ```
 
-## ONE : Create Storage
+## Create datastore
 
 1. To create a fs datastore in opennebula master
 
@@ -48,7 +52,7 @@ $ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --s
 
 ```
 
-## ONE : Create template
+## Create template
 
 1. To create a Template in opennebula master
 
@@ -56,7 +60,7 @@ $ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --s
 $ /var/lib/megam/abcdsh/one/create_template.sh
 ```
 
-## ONE : Create network
+## Create network
 
 1. To create a Network to opennebula master using `default:` type IP4 .
 
@@ -69,7 +73,7 @@ $ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gate
 $ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0 --type IP6
 ```
 
-## ONE : Create image
+## Create image
 
 1. To create a Image in opennebula master
 
@@ -82,7 +86,7 @@ $ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://ar
 
 ```
 
-## ONE : Create Cluster
+## Create Cluster
 
 1. To create a cluster in opennebula master
 
