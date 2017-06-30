@@ -7,13 +7,14 @@ echo "===============Add datastore of cluster  from opennebula master===========
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
 source $ROOT/"create-node.sh"
+source $ROOT/"parser.sh"
 
 function ds_cluster_usage() {
   echo "Usage:  cluster-adddatastore[OPTION]"
   echo
   echo "Options:"
-  echo " --cluster_id  <specify the cluster id> "
-  echo " --datastore_id  <specify the datastore id> "
+  echo " --cluster  <specify the name of the cluster> "
+  echo " --datastore  <specify the ip of the datastore> "
   echo " --help"
   echo
 }
@@ -27,18 +28,18 @@ function parse_addds_clusterparams() {
     token="$1"
     shift
     case "$token" in
-      (--cluster_id)
-        CLUSTER_ID="$1"
-        if [ -z "$CLUSTER_ID" ]
+      (--cluster)
+        CLUSTER_NAME="$1"
+        if [ -z "$CLUSTER_NAME" ]
         then
          ds_cluster_usage
          exit
         fi
         shift
         ;;
-      (--datastore_id)
-        DATASTORE_ID="$1"
-        if [ -z "$DATASTORE_ID" ]
+      (--datastore)
+        DATASTORE_IP="$1"
+        if [ -z "$DATASTORE_IP" ]
         then
          ds_cluster_usage
          exit
@@ -71,6 +72,8 @@ fi
 function cluster_adddatastore() {
 parse_addds_clusterparams "$@"
 verify-prereqs onecluster
+DATASTORE_ID=$(parseId $ONE_DS_OUT $DATASTORE_IP)
+CLUSTER_ID=$(parseId $ONE_CLUSTER_OUT $CLUSTER_NAME)
 onecluster adddatastore $CLUSTER_ID $DATASTORE_ID
 }
 

@@ -24,6 +24,7 @@ set -e
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
 source $ABCD_ROOT/"one/create-node.sh"
+source $ROOT/"parser.sh"
 #download image and create image to opennebula
 function image_download() {
 basename=${IMAGE_URL##*/}
@@ -39,14 +40,17 @@ oneimage create -d $ds_id --name $NAME --path $dir/$filename/$img
 }
 
 function create_image() {
-source  $ABCD_ROOT/"one/conf/result_info.sh"
-ds_id=`echo "$ds" | sed 's/.*: //'`
+ds_id=$(parseId $ONE_DS_OUT $NODEIP)
 extension=`echo $IMAGE_URL | awk -F'[.]' '{print $(NF-1)"."$NF}'`
 if [ "$extension" == "tar.gz" ]
 then
   image_download $ds_id
 else
-oneimage create -d $ds_id --name $NAME --path $IMAGE_URL
+img_id=$(oneimage create -d $ds_id --name $NAME --path $IMAGE_URL)
+img_id=`echo "$img_id" | sed 's/.*: //'`
+cat >>$ONE_IMAGES_OUT<<EOF
+$NAME: $img_id
+EOF
 fi
 }
 #create image to opennebula master
@@ -60,6 +64,7 @@ function image_usage() {
   echo
   echo "Options:"
   echo " --name  <give name of the image> "
+  echo " --datastore <ip of the datastore that image to be stored>"
   echo "--image_url <specify the download url or pathname of image location>"
   echo "--help"
   echo
@@ -80,6 +85,15 @@ function parse_imageparams() {
         then
          image_usage
          exit
+        fi
+        shift
+        ;;
+      (--datastore)
+        NODEIP="$1"
+        if [ -z "$NODEIP" ]
+        then
+          image_usage
+          exit
         fi
         shift
         ;;

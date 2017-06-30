@@ -7,13 +7,14 @@ echo "===============Add vnet of cluster  from opennebula master=============="
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
 source $ROOT/"create-node.sh"
+source $ROOT/"parser.sh"
 
 function addvnet_cluster_usage() {
   echo "Usage:  cluster-addvnet[OPTION]"
   echo
   echo "Options:"
   echo " --cluster_id  <specify the cluster id> "
-  echo " --vnet_id  <specify the vnet id> "
+  echo " --vnet_name  <specify the virutal network name> "
   echo " --help"
   echo
 }
@@ -36,9 +37,9 @@ function parse_addvnet_clusterparams() {
         fi
         shift
         ;;
-      (--vnet_id)
-        VNET_ID="$1"
-        if [ -z "$VNET_ID" ]
+      (--vnet_name)
+        VNET_NAME="$1"
+        if [ -z "$VNET_NAME" ]
         then
          addvnet_cluster_usage
          exit
@@ -71,6 +72,7 @@ fi
 function cluster_addvnet() {
 parse_addvnet_clusterparams "$@"
 verify-prereqs onecluster
+VNET_ID=$(parseId $ONE_NETWORK_OUT $VNET_NAME)
 onecluster addvnet $CLUSTER_ID $VNET_ID
 }
 

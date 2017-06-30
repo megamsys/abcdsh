@@ -35,6 +35,13 @@ function parse_clusterparams() {
         fi
         shift
         ;;
+      (--abcd_token)
+        ABCD_TOKEN="$1"
+        shift
+        ;;
+      (--abcd_url)
+        ABCD_URL="$1"
+        shift
       (--help|usage)
         cluster_usage
         exit 0
@@ -63,7 +70,30 @@ fi
 function cluster_create() {
 parse_clusterparams "$@"
 verify-prereqs onecluster
-onecluster create $CLUSTER_NAME
+cid=$(onecluster create $CLUSTER_NAME)
+cid=`echo "$cid" | sed 's/.*: //'`
+cat >>$ONE_CLUSTER_OUT<<EOF
+$CLUSTER_NAME: $cid
+EOF
 }
 
+function getConfig() {
+res_json=$(curl -X GET -H "Authorization: Bearer $ABCD_TOKEN" $ABCD_URL --insecure)
+}
+#package 'jq' have to be installed
+function update_config() {
+ configJson=$(jq '.data=(.data + {"CLUSTER_ID": "$cid"})')
+ $(curl -X GET -H "Authorization: Bearer $ABCD_TOKEN" -d $configJson $ABCD_URL --insecure)
+ configmap=${ABCD_URL##*/}
+ echo "ConfigMap $configmap updated successfully"
+}
+
+
 cluster_create "$@"
+
+if [ -z "$ABCD_TOKEN" | -z "$ABCD_URL"]
+then
+echo "cannot update the cluster id in the ConfigMap"
+else
+update_config
+fi

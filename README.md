@@ -29,26 +29,26 @@ $ /var/lib/megam/abcdsh/one/connect-node.sh --hostip 127.0.0.1 --hypervisor xen
 1. To create a fs datastore in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1 --fs fs
+$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1 --name fs_ds --fs fs
 ```
 
 2. To create a NFS  datastore in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs nfs
+$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --name nfs_ds --fs nfs
 ```
 
 3. To create a LVM  datastore in opennebula master  
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs lvm  
+$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1 --name lvm_ds --fs lvm  
 ```
 4. To create a CEPH  datastore to opennebula master
 
 For ceph datastore add extra parameter `--secret f6f03141-2666` is required.
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1  --fs ceph --secret f6f03141-2666
+$ /var/lib/megam/abcdsh/one/connect-storage.sh --nodeip 127.0.0.1 --name ceph_ds --fs ceph --secret f6f03141-2666
 
 ```
 
@@ -65,12 +65,13 @@ $ /var/lib/megam/abcdsh/one/create_template.sh
 1. To create a Network to opennebula master using `default:` type IP4 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
+$ /var/lib/megam/abcdsh/one/connect-network.sh --name public-ipv4 --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
 ```
 2. To create a Network to opennebula master using `default:` type IP6 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0 --type IP6
+$ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --ip 6001:f288:aaaa:bbbb::cccc --size 2 --gateway fe80::1
+  --network_mask 64 --type IP6
 ```
 
 ## Create image
@@ -78,11 +79,11 @@ $ /var/lib/megam/abcdsh/one/connect-network.sh  --ip 192.168.1.2 --size 2 --gate
 1. To create a Image in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz --datastore ceph_ds
 
 (or)
 
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso --datastore lvm_ds
 
 ```
 
@@ -91,18 +92,18 @@ $ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://ar
 1. To create a cluster in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/create-cluster.sh --cluster_name test
+$ /var/lib/megam/abcdsh/one/create-cluster.sh --cluster_name test --abcd_token u4M4bDqyw12nO2DsoNFSu1R4lae2khtQ6wxbO244dLs --abcd_url https://192.168.1.13:8443/api/v1/namespaces/default/configmaps/one-data
 ```
 2. Add host to cluster in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster_id  <10> --host_id <20>
+$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster test --host 192.168.1.1
 ```
 3. Add vnet to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster_id  <10> --vnet_id <0>
+$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster test --vnet public-ipv4
 ```
 4. Add datastore to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster_id  <10> --datastore_id <30>
+$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore ceph_ds
 ```

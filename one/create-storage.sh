@@ -24,22 +24,27 @@ set -e
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
 source $ABCD_ROOT/"one/create-node.sh"
-
+DS_CONF=""
 function create_ds() {
   if [[ $FS == "fs" || $FS == "nfs" ]]
   then
-    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ds.conf"
-    echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
+    DS_CONF=$ABCD_ROOT/"one/conf/ds.conf"
+    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
   elif [ $FS == "lvm" ]
   then
-   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/lvm_ds.conf"
-   echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/lvm_ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
+    DS_CONF=$ABCD_ROOT/"one/conf/lvm_ds.conf"
+   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
  else
-   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
-   sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
-   sed -i "s/^CEPH_SECRET = f6f03141$/CEPH_SECRET = $CEPH_SECRET/" $ABCD_ROOT/"one/conf/ceph_ds.conf"
-   echo "ds="\"`onedatastore create $ABCD_ROOT/"one/conf/ceph_ds.conf"`\" >> $ABCD_ROOT/"one/conf/result_info.sh"
+   DS_CONF=$ABCD_ROOT/"one/conf/ceph_ds.conf"
+   sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
+   sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $DS_CONF
+   sed -i "s/^CEPH_SECRET = f6f03141$/CEPH_SECRET = $CEPH_SECRET/" $DS_CONF
  fi
+ ds_id=`onedatastore create $DS_CONF`
+ ds_id=`echo "$ds_id" | sed 's/.*: //'`
+ cat >>$ONE_DS_OUT<<EOF
+ $NODEIP:  $ds_id
+ EOF
 }
 #create node to opennebula master
 function create-storage() {
@@ -52,6 +57,7 @@ function storage_usage() {
   echo
   echo "Options:"
   echo " --nodeip  <give node ipaddress or name> "
+  echo "--name <name of the new cluster>"
   echo "--fs <give filesystem datatype like fs, lvm, nfs, ceph>"
   echo "--secret <if you ceph use this parameter and specify the secret key of ceph>"
   echo "--help"
