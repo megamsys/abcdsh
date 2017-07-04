@@ -79,10 +79,14 @@ EOF
 
 function getConfig() {
 res_json=$(curl -X GET -H "Authorization: Bearer $ABCD_TOKEN" $ABCD_URL --insecure)
+echo $res_json >get.json
 }
 #package 'jq' have to be installed
 function update_config() {
  configJson=$(jq '.data=(.data + {"CLUSTER_ID": "$cid"})')
+ echo "{\"data\":{\"CLUSTER_ID\":\"$cid\"}}">temp.json
+# merge two json files
+configJson=$(jq -s '.[0] * .[1]' get.json temp.json)
  $(curl -X GET -H "Authorization: Bearer $ABCD_TOKEN" -d $configJson $ABCD_URL --insecure)
  configmap=${ABCD_URL##*/}
  echo "ConfigMap $configmap updated successfully"
