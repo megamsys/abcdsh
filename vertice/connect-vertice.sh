@@ -58,16 +58,16 @@ function update_vertice() {
     cat nilavu.conf | awk '/one_datastore_id/{c+=1}{if(c=='"${count}"'){sub("one_datastore_id.*","one_datastore_id = \"'"${DATASTORE_ID}"'\"",$0)};print}' >$VERTICE_CONF
     cat nilavu.conf | awk '/cluster_id/{c+=1}{if(c=='"${count}"'){sub("cluster_id.*","cluster_id = \"'"${CLUSTER_ID}"'\"",$0)};print}' >$VERTICE_CONF
 
-    if [ ! -z $PUB_IPV4 ]; then
+    if [ ! -z $PUBLIC_IPV4 ]; then
       cat nilavu.conf | awk '/vnet_pub_ipv4/{c+=1}{if(c=='"${count}"'){sub("vnet_pub_ipv4.*","vnet_pub_ipv4 = [\"'"${PUB_IPV4}"'\"]",$0)};print}' >$VERTICE_CONF
     fi
-    if [ ! -z $PUB_IPV6 ]; then
+    if [ ! -z $PUBLIC_IPV6 ]; then
       cat nilavu.conf | awk '/vnet_pub_ipv6/{c+=1}{if(c=='"${count}"'){sub("vnet_pub_ipv6.*","vnet_pub_ipv6 = [\"'"${PUB_IPV6}"'\"]",$0)};print}' >$VERTICE_CONF
     fi
-    if [ ! -z $PRI_IPV4 ]; then
+    if [ ! -z $PRIVATE_IPV4 ]; then
       cat nilavu.conf | awk '/vnet_pri_ipv4/{c+=1}{if(c=='"${count}"'){sub("vnet_pri_ipv4.*","vnet_pri_ipv4 = [\"'"${PRI_IPV4}"'\"]",$0)};print}' >$VERTICE_CONF
     fi
-    if [ ! -z $PRI_IPV6 ]; then
+    if [ ! -z $PRIVATE_IPV6 ]; then
       cat nilavu.conf | awk '/vnet_pri_ipv6/{c+=1}{if(c=='"${count}"'){sub("vnet_pri_ipv6.*","vnet_pri_ipv6 = [\"'"${PRI_IPV6}"'\"]",$0)};print}' >$VERTICE_CONF
     fi
 }

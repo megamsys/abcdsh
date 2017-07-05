@@ -107,3 +107,23 @@ $ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster test --vnet public-ipv4
 ```
 $ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore ceph_ds
 ```
+
+
+
+## Vertice Configuration Update
+
+1. To update vertice configuration file vertice.conf
+
+```
+$/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 --gateway-ip --datastore-id 100 --cluster-id 101 --network_name PRIVATE-IPV4="net0" --network_name  PRIVATE-IPV6="net1" --network_name PUBLIC-IPV4="net2" --network_name  PUBLIC-IPV6="net3" --region  Romania
+
+```
+
+
+## Nilavu Configuration Update
+
+1. To update api server ip in nilavu.conf
+```
+$/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100
+
+```

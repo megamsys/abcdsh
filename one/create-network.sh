@@ -55,7 +55,7 @@ function network_usage() {
   echo
   echo "Options:"
   echo "--name <name of the network>"
-  echo " --ip  <First IP in the range in dot notation.> "
+  echo " --start-ip  <First IP in the range in dot notation.> "
   echo "--size <give number of ip addresses in this range.>"
   echo "--gateway <give default gateway ip  for the network>"
   echo "--network_mask <give network mask address>"
@@ -73,7 +73,7 @@ function parse_networkparams() {
     token="$1"
     shift
     case "$token" in
-      (--ip)
+      (--start-ip)
          IP="$1"
         if [ -z "$IP" ]
         then
