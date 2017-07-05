@@ -24,18 +24,25 @@ set -e
 ROOT=$(dirname "${BASH_SOURCE}")
 source $ROOT/"../lib/init.sh"
 source $ABCD_ROOT/"one/create-node.sh"
-
+vnet_id=""
 function create_net() {
-    sed -i "s/IP = 127.0.0.1/IP = $IP/" $ABCD_ROOT/"one/conf/vnet.net"
-    sed -i "s/SIZE = 1/SIZE = $SIZE/" $ABCD_ROOT/"one/conf/vnet.net"
-    sed -i "s/^GATEWAY = 127.0.0.1$/GATEWAY = $GATEWAY/" $ABCD_ROOT/"one/conf/vnet.net"
-    sed -i "s/^NETWORK_MASK = 255.255.255.xxx$/NETWORK_MASK = $NETMASK/" $ABCD_ROOT/"one/conf/vnet.net"
-    if [ "$TYPE" == "IP6" ]
-    then
-    onevnet create $ABCD_ROOT/"one/conf/vnet6.net"
-   else
-    onevnet create $ABCD_ROOT/"one/conf/vnet.net"
+  if [ "$TYPE" == "IP6" ]
+  then
+    vnet=$ABCD_ROOT/"one/conf/vnet6.net"
+  else
+    vnet=$ABCD_ROOT/"one/conf/vnet.net"
   fi
+    sed -i "s/^NAME = public$/NAME = $VNET_NAME/" $vnet
+    sed -i "s/IP = 127.0.0.1/IP = $IP/" $vnet
+    sed -i "s/SIZE = 1/SIZE = $SIZE/" $vnet
+    sed -i "s/^GATEWAY = 127.0.0.1$/GATEWAY = $GATEWAY/" $vnet
+    sed -i "s/^NETWORK_MASK = 255.255.255.xxx$/NETWORK_MASK = $NETMASK/" $vnet
+
+  vnet_id=$(onevnet create $vnet")
+  vnet_id=`echo "$vnet_id" | sed 's/.*: //'`
+  cat >>$ONE_NETWORK_OUT<<EOF
+  $VNET_NAME: $vnet_id
+  EOF
 }
 #create network to opennebula master
 function create-network() {
@@ -47,7 +54,8 @@ function network_usage() {
   echo "Usage:  connectnetwork[OPTION]"
   echo
   echo "Options:"
-  echo " --ip  <First IP in the range in dot notation.> "
+  echo "--name <name of the network>"
+  echo " --start-ip  <First IP in the range in dot notation.> "
   echo "--size <give number of ip addresses in this range.>"
   echo "--gateway <give default gateway ip  for the network>"
   echo "--network_mask <give network mask address>"
@@ -65,7 +73,7 @@ function parse_networkparams() {
     token="$1"
     shift
     case "$token" in
-      (--ip)
+      (--start-ip)
          IP="$1"
         if [ -z "$IP" ]
         then
@@ -92,6 +100,15 @@ function parse_networkparams() {
          fi
          shift
         ;;
+      (--name)
+         VNET_NAME="$1"
+         if [ -z "$VNET_NAME" ]
+         then
+           network_usage
+            exit
+           fi
+           shift
+          ;;
       (--network_mask)
           NETMASK="$1"
           if [ -z "$NETMASK" ]
