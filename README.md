@@ -115,7 +115,7 @@ $ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore c
 1. To update vertice configuration file vertice.conf
 
 ```
-$/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 --gateway-ip --datastore-id 100 --cluster-id 101 --network_name PRIVATE-IPV4="net0" --network_name  PRIVATE-IPV6="net1" --network_name PUBLIC-IPV4="net2" --network_name  PUBLIC-IPV6="net3" --region  Romania
+$/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 --datastore-id 100 --cluster-id 101 --network_name PRIVATE-IPV4="net0" --network_name  PRIVATE-IPV6="net1" --network_name PUBLIC-IPV4="net2" --network_name  PUBLIC-IPV6="net3" --region  Romania
 
 ```
 
