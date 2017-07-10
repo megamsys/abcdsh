@@ -30,21 +30,28 @@ function create_ds() {
   then
     DS_CONF=$ABCD_ROOT/"one/conf/ds.conf"
     sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
+    sed -i "s/^NAME = nfs_images$/NAME = $NAME/" $DS_CONF
+
   elif [ $FS == "lvm" ]
   then
     DS_CONF=$ABCD_ROOT/"one/conf/lvm_ds.conf"
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
+   sed -i "s/^NAME = production$/NAME = $NAME/" $DS_CONF
+
  else
    DS_CONF=$ABCD_ROOT/"one/conf/ceph_ds.conf"
    sed -i "s/^BRIDGE_LIST = 127.0.0.1$/BRIDGE_LIST = $NODEIP/" $DS_CONF
    sed -i "s/^CEPH_HOST = 127.0.0.1$/CEPH_HOST = $NODEIP/" $DS_CONF
    sed -i "s/^CEPH_SECRET = f6f03141$/CEPH_SECRET = $CEPH_SECRET/" $DS_CONF
+   sed -i "s/^NAME = cephds$/NAME = $NAME/" $DS_CONF
+
  fi
  ds_id=`onedatastore create $DS_CONF`
- ds_id=`echo "$ds_id" | sed 's/.*: //'`
- cat >>$ONE_DS_OUT<<EOF
- $NODEIP:  $ds_id
- EOF
+ ds1_id=`echo "$ds_id" | sed 's/.*: //'`
+mkdir -p $ABCD_OUTPUT
+cat >$ONE_DS_OUT<< EOF
+ $NODEIP:  $ds1_id
+EOF
 }
 #create node to opennebula master
 function create-storage() {
@@ -82,6 +89,16 @@ function parse_storageparams() {
         fi
         shift
         ;;
+      (--name)
+        NAME="$1"
+        if [ -z "$NAME" ]
+        then
+         storage_usage
+         exit
+        fi
+        shift
+        ;;
+
       (--fs)
         FS="$1"
         if [ -z "$FS" ]
