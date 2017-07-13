@@ -65,13 +65,12 @@ $ /var/lib/megam/abcdsh/one/create_template.sh
 1. To create a Network to opennebula master using `default:` type IP4 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh --name public-ipv4 --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
+$ /var/lib/megam/abcdsh/one/connect-network.sh --name public-ipv4 --start-ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
 ```
 2. To create a Network to opennebula master using `default:` type IP6 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --ip 6001:f288:aaaa:bbbb::cccc --size 2 --gateway fe80::1
-  --network_mask 64 --type IP6
+$ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --start-ip 6001:f288:aaaa:bbbb::cccc --size 2 --gateway fe80::1 --network_mask 64 --type IP6
 ```
 
 ## Create image
@@ -79,11 +78,11 @@ $ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --ip 6001:f28
 1. To create a Image in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz --datastore ceph_ds
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz --datastore 192.168.1.100
 
 (or)
 
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso --datastore lvm_ds
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso --datastore 192.168.1.100
 
 ```
 
@@ -127,3 +126,4 @@ $/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 -
 $/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100
 
 ```
+
