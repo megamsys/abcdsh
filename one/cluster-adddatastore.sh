@@ -28,7 +28,7 @@ function parse_addds_clusterparams() {
     token="$1"
     shift
     case "$token" in
-      (--cluster)
+      (--cluster_name)
         CLUSTER_NAME="$1"
         if [ -z "$CLUSTER_NAME" ]
         then
@@ -37,7 +37,7 @@ function parse_addds_clusterparams() {
         fi
         shift
         ;;
-      (--datastore)
+      (--datastore_ip)
         DATASTORE_IP="$1"
         if [ -z "$DATASTORE_IP" ]
         then
@@ -74,7 +74,7 @@ parse_addds_clusterparams "$@"
 verify-prereqs onecluster
 DATASTORE_ID=$(parseId $ONE_DS_OUT $DATASTORE_IP)
 CLUSTER_ID=$(parseId $ONE_CLUSTER_OUT $CLUSTER_NAME)
-onecluster adddatastore $CLUSTER_ID $DATASTORE_ID
+onecluster adddatastore $CLUSTER_NAME $DATASTORE_IP
 }
 
 cluster_adddatastore "$@"

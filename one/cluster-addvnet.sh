@@ -72,8 +72,9 @@ fi
 function cluster_addvnet() {
 parse_addvnet_clusterparams "$@"
 verify-prereqs onecluster
+CLUSTER_ID=$(parseId $ONE_CLUSTER_OUT $CLUSTER_NAME)
 VNET_ID=$(parseId $ONE_NETWORK_OUT $VNET_NAME)
-onecluster addvnet $CLUSTER_ID $VNET_ID
+onecluster addvnet $CLUSTER_ID $VNET_NAME
 }
 
 cluster_addvnet "$@"

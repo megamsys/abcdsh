@@ -96,15 +96,15 @@ $ /var/lib/megam/abcdsh/one/create-cluster.sh --cluster_name test --abcd_token u
 2. Add host to cluster in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster test --host 192.168.1.1
+$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster_id test --host_id 192.168.1.1
 ```
 3. Add vnet to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster test --vnet public-ipv4
+$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster_id test --vnet_name public-ipv4
 ```
 4. Add datastore to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore ceph_ds
+$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster_name test --datastore_ip ceph_ds
 ```
 
 
@@ -126,4 +126,3 @@ $/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 -
 $/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100
 
 ```
-
