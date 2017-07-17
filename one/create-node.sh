@@ -48,9 +48,11 @@ function createhost() {
  verify-prereqs onehost
  hid=$(onehost create $HOSTIP --im $HYPERVISOR --vm $HYPERVISOR)
  hid=`echo "$hid" | sed 's/.*: //'`
- cat >>$ONE_HOST_OUT<<EOF
+ echo $ONE_HOST_OUT
+ mkdir -p $ABCD_OUTPUT
+ cat >$ONE_HOST_OUT<< EOF
  $HOSTIP: $hid
- EOF
+EOF
 }
 
 function usage() {
@@ -112,3 +114,4 @@ if [ "$#" -le 0 ]
 exit 0
 fi
 }
+

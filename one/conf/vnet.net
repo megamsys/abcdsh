@@ -1,4 +1,4 @@
-NAME   = "public"
+NAME   = public
 TYPE   = FIXED
 BRIDGE = one
 AR = [ TYPE = "IP4", IP = 127.0.0.1, SIZE = 1 ]

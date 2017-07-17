@@ -39,7 +39,7 @@ img=$(ls $dir/$filename)
 oneimage create -d $ds_id --name $NAME --path $dir/$filename/$img
 }
 
-function create_image() {
+function create-image() {
 ds_id=$(parseId $ONE_DS_OUT $NODEIP)
 extension=`echo $IMAGE_URL | awk -F'[.]' '{print $(NF-1)"."$NF}'`
 if [ "$extension" == "tar.gz" ]
@@ -48,9 +48,10 @@ then
 else
 img_id=$(oneimage create -d $ds_id --name $NAME --path $IMAGE_URL)
 img_id=`echo "$img_id" | sed 's/.*: //'`
-cat >>$ONE_IMAGES_OUT<<EOF
-$NAME: $img_id
+cat >$ONE_IMAGES_OUT<< EOF
+ $NAME: $img_id
 EOF
+
 fi
 }
 #create image to opennebula master
@@ -127,3 +128,4 @@ if [ "$#" -le 0 ]
 exit 0
 fi
 }
+

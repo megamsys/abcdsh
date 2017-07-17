@@ -20,7 +20,7 @@ function addhost_cluster_usage() {
 
 #check host parameters are present or not
 function parse_addhost_clusterparams() {
-   check_addhost_params "$@"
+    check_addhost_params "$@"
     while
     (( $# > 0 ))
     do
@@ -38,20 +38,24 @@ function parse_addhost_clusterparams() {
         ;;
       (--host_id)
         HOST_ID="$1"
+	echo $1
         if [ -z "$HOST_ID" ]
         then
+          echo "hosttttttttttttttttttttt idddddd"
          addhost_cluster_usage
          exit
         fi
         shift
         ;;
       (--help|usage)
+        echo "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
         addhost_cluster_usage
         exit 0
         ;;
 
       (*)
-       addhost_cluster_usage
+        echo "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+        addhost_cluster_usage
         exit 1
         ;;
 
@@ -62,18 +66,19 @@ function parse_addhost_clusterparams() {
 #check arguments is passed from commandline
 function check_addhost_params() {
 if [ "$#" -le 0 ]
- then
+then
  echo "NO ARGUMENTS ARE PASSED!!!!!!"
  addhost_cluster_usage
 exit 0
 fi
 }
 
-
 function cluster_addhost() {
+echo "adddddddddddddddddddhhhhhhhhhhhhhhhhhossssssssssssssssstttttttttttt"
 parse_addhost_clusterparams "$@"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 verify-prereqs onecluster
-onecluster addhost $CLUSTER_ID $HOST_ID
+onecluster addhost  $CLUSTER_ID $HOST_ID
 }
 
 cluster_addhost "$@"

@@ -65,13 +65,12 @@ $ /var/lib/megam/abcdsh/one/create_template.sh
 1. To create a Network to opennebula master using `default:` type IP4 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh --name public-ipv4 --ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
+$ /var/lib/megam/abcdsh/one/connect-network.sh --name public-ipv4 --start-ip 192.168.1.2 --size 2 --gateway 192.168.1.1  --network_mask 255.255.255.0
 ```
 2. To create a Network to opennebula master using `default:` type IP6 .
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --ip 6001:f288:aaaa:bbbb::cccc --size 2 --gateway fe80::1
-  --network_mask 64 --type IP6
+$ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --start-ip 6001:f288:aaaa:bbbb::cccc --size 2 --gateway fe80::1 --network_mask 64 --type IP6
 ```
 
 ## Create image
@@ -79,11 +78,11 @@ $ /var/lib/megam/abcdsh/one/connect-network.sh  --name public-ipv6 --ip 6001:f28
 1. To create a Image in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz --datastore ceph_ds
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url https://s3-ap-southeast-1.amazonaws.com/megampub/iso/megam.tar.gz --datastore 192.168.1.100
 
 (or)
 
-$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso --datastore lvm_ds
+$ /var/lib/megam/abcdsh/one/connect-image.sh --name ubuntu --image_url http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/current/images/netboot/mini.iso --datastore 192.168.1.100
 
 ```
 
@@ -97,15 +96,15 @@ $ /var/lib/megam/abcdsh/one/create-cluster.sh --cluster_name test --abcd_token u
 2. Add host to cluster in opennebula master
 
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster test --host 192.168.1.1
+$ /var/lib/megam/abcdsh/one/cluster-addhost.sh --cluster_id test --host_id 192.168.1.1
 ```
 3. Add vnet to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster test --vnet public-ipv4
+$ /var/lib/megam/abcdsh/one/cluster-addvnet.sh --cluster_id test --vnet_name public-ipv4
 ```
 4. Add datastore to cluster in opennebula master
 ```
-$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore ceph_ds
+$ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster_name test --datastore_ip ceph_ds
 ```
 
 
@@ -115,7 +114,7 @@ $ /var/lib/megam/abcdsh/one/cluster-adddatastore.sh --cluster test --datastore c
 1. To update vertice configuration file vertice.conf
 
 ```
-$/var/lib/megam/abcdsh/vertice/connect-apiserver.sh --gateway-ip 192.168.1.100 --datastore-id 100 --cluster-id 101 --network_name PRIVATE-IPV4="net0" --network_name  PRIVATE-IPV6="net1" --network_name PUBLIC-IPV4="net2" --network_name  PUBLIC-IPV6="net3" --region  Romania
+$/var/lib/megam/abcdsh/vertice/connect-vertice.sh --gateway_ip 192.168.1.100 --datastore-id 100 --cluster-id 101 --network_name PRIVATE-IPV4="net0" --network_name  PRIVATE-IPV6="net1" --network_name PUBLIC-IPV4="net2" --network_name  PUBLIC-IPV6="net3" --region  Romania
 
 ```
 
